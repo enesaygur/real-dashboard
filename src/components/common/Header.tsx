@@ -1,4 +1,4 @@
-import styles from "./Header.mo:dule.css";
+import styles from "./Header.module.css";
 function Header() {
   return (
     <header className={styles.header}>
