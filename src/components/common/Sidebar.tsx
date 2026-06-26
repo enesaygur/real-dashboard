@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 function Sidebar() {
   return (
     <aside>
@@ -5,9 +7,18 @@ function Sidebar() {
 
       <nav>
         <ul>
-          <li>Home</li>
-          <li>Users</li>
-          <li>Settings</li>
+          <li>
+            <NavLink to="/">Dashboard</NavLink>
+          </li>
+          <li>
+            <NavLink to="/users">Users</NavLink>
+          </li>
+          <li>
+            <NavLink to="/settings">Settings</NavLink>
+          </li>
+          <li>
+            <NavLink to="/profile">Profile</NavLink>
+          </li>
         </ul>
       </nav>
     </aside>
