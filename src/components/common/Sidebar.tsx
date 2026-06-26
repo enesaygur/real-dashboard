@@ -9,16 +9,45 @@ function Sidebar() {
       <nav>
         <ul className={styles.list}>
           <li>
-            <NavLink to="/">Dashboard</NavLink>
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                isActive ? `${styles.link} ${styles.active}` : styles.link
+              }
+            >
+              Dashboard
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/users">Users</NavLink>
+            <NavLink
+              to="/users"
+              className={({ isActive }) =>
+                isActive ? `${styles.link} ${styles.active}` : styles.link
+              }
+            >
+              Users
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/settings">Settings</NavLink>
+            <NavLink
+              to="/settings"
+              className={({ isActive }) =>
+                isActive ? `${styles.link} ${styles.active}` : styles.link
+              }
+            >
+              Settings
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/profile">Profile</NavLink>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                isActive ? `${styles.link} ${styles.active}` : styles.link
+              }
+            >
+              Profile
+            </NavLink>
           </li>
         </ul>
       </nav>
