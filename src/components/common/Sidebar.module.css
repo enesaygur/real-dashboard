@@ -18,3 +18,20 @@
 .list li {
   margin-bottom: 0.75rem;
 }
+
+.link {
+  display: block;
+  padding: 0.75rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.link:hover {
+  background-color: #374151;
+}
+
+.active {
+  background-color: #2563eb;
+}
