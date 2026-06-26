@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
+import styles from "./Sidebar.module.css";
 
 function Sidebar() {
   return (
-    <aside>
-      <h2>Dashboard</h2>
+    <aside className={styles.sidebar}>
+      <h2 className={styles.title}>Dashboard</h2>
 
       <nav>
-        <ul>
+        <ul className={styles.list}>
           <li>
             <NavLink to="/">Dashboard</NavLink>
           </li>
