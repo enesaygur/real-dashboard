@@ -6,12 +6,15 @@ import UsesrPage from "../pages/UsesrPage";
 import SettingsPage from "../pages/SettingsPage";
 import ProfilePage from "../pages/ProfilePage";
 import NotFoundPage from "../pages/NotFoundPage";
+import AuthLayout from "../layouts/AuthLayout";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+        </Route>
         <Route path="/" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="users" element={<UsesrPage />} />
