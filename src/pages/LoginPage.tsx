@@ -36,7 +36,10 @@ function LoginPage() {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailError("");
+            }}
           />
           {emailError && <p>{emailError}</p>}
         </div>
@@ -45,7 +48,10 @@ function LoginPage() {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError("");
+            }}
           />
           {passwordError && <p>{passwordError}</p>}
         </div>
