@@ -3,10 +3,11 @@ import { useAuth } from "../../context/AuthContext";
 import styles from "./Header.module.css";
 function Header() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   return (
     <header className={styles.header}>
       <h3>Real World Dashboard</h3>
+      <span>{user?.email}</span>
       <button
         onClick={() => {
           logout();

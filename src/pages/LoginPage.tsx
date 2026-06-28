@@ -40,8 +40,9 @@ function LoginPage() {
       formData.email === "admin@example.com" &&
       formData.password === "123456"
     ) {
-      login();
+      login(formData.email, formData.password);
       navigate("/");
+      return;
     }
     setAuthError("Invalid email or password");
   };

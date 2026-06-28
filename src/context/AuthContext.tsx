@@ -1,32 +1,36 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
+interface User {
+  email: string;
+}
 interface AuthContextType {
-  isAuthenticated: boolean;
-  login: () => void;
+  user: User | null;
+  login: (email: string, password: string) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
-    const savedAuth = localStorage.getItem("auth");
-    if (savedAuth === "true") {
-      setIsAuthenticated(true);
+    const savedAuth = localStorage.getItem("user");
+    if (savedAuth) {
+      setUser(JSON.parse(savedAuth));
     }
   }, []);
-  const login = () => {
-    setIsAuthenticated(true);
-    localStorage.setItem("auth", "true");
+  const login = (email: string, password: string) => {
+    const fakeUser = { email };
+    setUser(fakeUser);
+    localStorage.setItem("user", JSON.stringify(fakeUser));
   };
   const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("auth");
+    setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
