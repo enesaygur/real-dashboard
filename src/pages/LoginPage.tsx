@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 interface LoginFormData {
   email: string;
   password: string;
@@ -9,6 +10,8 @@ function LoginPage() {
     email: "",
     password: "",
   });
+  const [authError, setAuthError] = useState<string>("");
+  const navigate = useNavigate();
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +34,13 @@ function LoginPage() {
     if (!isValid) {
       return;
     }
-    console.log(formData.email, formData.password);
+    if (
+      formData.email === "admin@example.com" &&
+      formData.password === "123456"
+    ) {
+      navigate("/");
+    }
+    setAuthError("Invalid email or password");
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -64,6 +73,7 @@ function LoginPage() {
           />
           {passwordError && <p>{passwordError}</p>}
         </div>
+        {authError && <p>{authError}</p>}
         <button type="submit">Sign In</button>
       </form>
     </div>
