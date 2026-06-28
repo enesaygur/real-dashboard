@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 interface LoginFormData {
   email: string;
   password: string;
@@ -14,6 +15,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+  const { login } = useAuth();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError("");
@@ -38,6 +40,7 @@ function LoginPage() {
       formData.email === "admin@example.com" &&
       formData.password === "123456"
     ) {
+      login();
       navigate("/");
     }
     setAuthError("Invalid email or password");
