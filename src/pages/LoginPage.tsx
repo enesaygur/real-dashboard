@@ -3,8 +3,28 @@ import { useState } from "react";
 function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
+
+    let isValid = true;
+
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      isValid = false;
+    }
+
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
     console.log(email, password);
   };
   return (
@@ -18,6 +38,7 @@ function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          {emailError && <p>{emailError}</p>}
         </div>
         <div>
           <label>Password</label>
@@ -26,6 +47,7 @@ function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {passwordError && <p>{passwordError}</p>}
         </div>
         <button type="submit">Sign In</button>
       </form>
