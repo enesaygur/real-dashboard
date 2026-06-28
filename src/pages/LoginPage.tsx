@@ -1,8 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 
 function LoginPage() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: "",
+    password: "",
+  });
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -12,12 +18,12 @@ function LoginPage() {
 
     let isValid = true;
 
-    if (!email.trim()) {
+    if (!formData.email.trim()) {
       setEmailError("Email is required");
       isValid = false;
     }
 
-    if (!password.trim()) {
+    if (!formData.password.trim()) {
       setPasswordError("Password is required");
       isValid = false;
     }
@@ -25,7 +31,14 @@ function LoginPage() {
     if (!isValid) {
       return;
     }
-    console.log(email, password);
+    console.log(formData.email, formData.password);
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
   return (
     <div>
@@ -34,24 +47,20 @@ function LoginPage() {
         <div>
           <label>Email</label>
           <input
+            name="email"
             type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setEmailError("");
-            }}
+            value={formData.email}
+            onChange={handleChange}
           />
           {emailError && <p>{emailError}</p>}
         </div>
         <div>
           <label>Password</label>
           <input
+            name="password"
             type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setPasswordError("");
-            }}
+            value={formData.password}
+            onChange={handleChange}
           />
           {passwordError && <p>{passwordError}</p>}
         </div>
