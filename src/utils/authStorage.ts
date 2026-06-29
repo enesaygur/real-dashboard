@@ -1,6 +1,6 @@
 const KEY = "user";
 export function saveUser(user: unknown) {
-  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem(KEY, JSON.stringify(user));
 }
 
 export function getUser() {

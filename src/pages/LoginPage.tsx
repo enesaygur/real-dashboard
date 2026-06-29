@@ -15,7 +15,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  const { login, loading } = useAuth();
+  const { login } = useAuth();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError("");
@@ -36,19 +36,13 @@ function LoginPage() {
     if (!isValid) {
       return;
     }
-    if (
-      formData.email === "admin@example.com" &&
-      formData.password === "123456"
-    ) {
-      try {
-        await login(formData.email, formData.password);
-        navigate("/");
-      } catch (error) {
-        setAuthError("Invalid email or password");
-      }
-
-      return;
+    try {
+      await login(formData.email, formData.password);
+      navigate("/");
+    } catch (error) {
+      setAuthError("Invalid email or password");
     }
+
     setAuthError("Invalid email or password");
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,9 +77,7 @@ function LoginPage() {
           {passwordError && <p>{passwordError}</p>}
         </div>
         {authError && <p>{authError}</p>}
-        <button type="submit" disabled={loading}>
-          {loading ? "Loading..." : "Sign In"}
-        </button>
+        <button type="submit">Sign In</button>
       </form>
     </div>
   );
