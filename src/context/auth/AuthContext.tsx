@@ -1,8 +1,11 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { fakeLogin } from "../../api/authApi";
-import { saveUser, getUser, clearUser } from "../../utils/authStorage";
 import { authReducer } from "./authReducer";
 import { AUTH_ACTIONS } from "./authActions";
+import {
+  getStoredUser,
+  loginService,
+  logoutService,
+} from "../../services/authService";
 
 interface User {
   email: string;
@@ -25,9 +28,9 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const { user, loading } = state;
   useEffect(() => {
-    const savedUser = getUser();
-    if (savedUser) {
-      dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: savedUser });
+    const user = getStoredUser();
+    if (user) {
+      dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: user });
     }
     dispatch({ type: AUTH_ACTIONS.INIT_FINISH });
   }, []);
@@ -35,17 +38,15 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string) => {
     dispatch({ type: AUTH_ACTIONS.LOGIN_START });
     try {
-      const response = await fakeLogin(email, password);
-      const fakeUser = { email: response.email };
-      saveUser(fakeUser);
-      dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: fakeUser });
+      const user = await loginService(email, password);
+      dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: user });
     } catch (error) {
       dispatch({ type: AUTH_ACTIONS.LOGIN_ERROR });
     }
   };
 
   const logout = () => {
-    clearUser();
+    logoutService();
     dispatch({ type: AUTH_ACTIONS.LOGOUT });
   };
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 interface LoginFormData {
   email: string;
@@ -15,7 +15,11 @@ function LoginPage() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmailError("");
