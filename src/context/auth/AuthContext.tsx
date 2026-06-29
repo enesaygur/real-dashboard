@@ -1,6 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { fakeLogin } from "../api/authApi";
-import { saveUser, getUser, clearUser } from "./../utils/authStorage";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import { fakeLogin } from "../../api/authApi";
+import { saveUser, getUser, clearUser } from "../../utils/authStorage";
+import { authReducer } from "./authReducer";
+import { AUTH_ACTIONS } from "./authActions";
 
 interface User {
   email: string;
@@ -12,34 +14,39 @@ interface AuthContextType {
   loading: boolean;
 }
 
+const initialState = {
+  user: null,
+  loading: true,
+};
+
 const AuthContext = createContext<AuthContextType | null>(null);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [state, dispatch] = useReducer(authReducer, initialState);
+  const { user, loading } = state;
   useEffect(() => {
     const savedUser = getUser();
     if (savedUser) {
-      setUser(savedUser);
+      dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: savedUser });
     }
-    setLoading(false);
+    dispatch({ type: AUTH_ACTIONS.INIT_FINISH });
   }, []);
+
   const login = async (email: string, password: string) => {
-    setLoading(true);
+    dispatch({ type: AUTH_ACTIONS.LOGIN_START });
     try {
       const response = await fakeLogin(email, password);
       const fakeUser = { email: response.email };
-      setUser(fakeUser);
       saveUser(fakeUser);
+      dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: fakeUser });
     } catch (error) {
-      throw error;
-    } finally {
-      setLoading(false);
+      dispatch({ type: AUTH_ACTIONS.LOGIN_ERROR });
     }
   };
+
   const logout = () => {
-    setUser(null);
     clearUser();
+    dispatch({ type: AUTH_ACTIONS.LOGOUT });
   };
 
   return (
