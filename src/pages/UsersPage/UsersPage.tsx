@@ -6,15 +6,21 @@ function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 3;
 
   useEffect(() => {
     async function loadUsers() {
-      const data = await fetchUsers();
-      setUsers(data);
+      setLoading(true);
+      const res = await fetchUsers(page, limit);
+      setUsers(res.data);
+      setTotal(res.total);
       setLoading(false);
     }
     loadUsers();
-  }, []);
+  }, [page]);
+  const totalPages = Math.ceil(total / limit);
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -50,6 +56,23 @@ function UsersPage() {
           ))}
         </tbody>
       </table>
+      <div style={{ marginTop: "20px" }}>
+        <button
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          disabled={page === 1}
+        >
+          Prev
+        </button>
+        <span style={{ margin: "0 10px" }}>
+          Page {page} / {totalPages}
+        </span>
+        <button
+          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={page === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

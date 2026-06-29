@@ -1,28 +1,21 @@
 import type { User } from "../types/user";
-
-export function getUser(): Promise<User[]> {
-  return new Promise((resolve) => {
+const ALL_USERS: User[] = [
+  { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
+  { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User" },
+  { id: 3, name: "Mike Brown", email: "mike@example.com", role: "User" },
+  { id: 4, name: "Sarah Lee", email: "sarah@example.com", role: "User" },
+  { id: 5, name: "Tom Hardy", email: "tom@example.com", role: "User" },
+  { id: 6, name: "Emma Stone", email: "emma@example.com", role: "User" },
+];
+export function getUser(page: number, limit: number) {
+  return new Promise<{ data: User[]; total: number }>((resolve) => {
     setTimeout(() => {
-      resolve([
-        {
-          id: 1,
-          name: "John Doe",
-          email: "admin@example.com",
-          role: "Admin",
-        },
-        {
-          id: 2,
-          name: "Jane Doe",
-          email: "user@example.com",
-          role: "User",
-        },
-        {
-          id: 3,
-          name: "Bob Smith",
-          email: "user2@example.com",
-          role: "User",
-        },
-      ]);
-    }, 800);
+      const start = (page - 1) * limit;
+      const end = start + limit;
+      resolve({
+        data: ALL_USERS.slice(start, end),
+        total: ALL_USERS.length,
+      });
+    }, 500);
   });
 }
