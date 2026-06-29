@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { fakeLogin } from "../api/authApi";
+import { saveUser, getUser, clearUser } from "./../utils/authStorage";
 
 interface User {
   email: string;
 }
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => void;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -17,9 +18,9 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const savedAuth = localStorage.getItem("user");
-    if (savedAuth) {
-      setUser(JSON.parse(savedAuth));
+    const savedUser = getUser();
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     }
   }, []);
   const login = async (email: string, password: string) => {
@@ -28,7 +29,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await fakeLogin(email, password);
       const fakeUser = { email: response.email };
       setUser(fakeUser);
-      localStorage.setItem("user", JSON.stringify(fakeUser));
+      saveUser(fakeUser);
     } catch (error) {
       throw error;
     } finally {
@@ -37,7 +38,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   };
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    clearUser();
   };
 
   return (
