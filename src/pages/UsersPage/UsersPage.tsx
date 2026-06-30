@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchUsers } from "../../services/userService";
 import type { User } from "../../types/user";
+import UserTable from "../../components/users/UserTable";
 
 function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -48,40 +49,19 @@ function UsersPage() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <table>
-        <thead>
-          <tr>
-            <th
-              onClick={() => {
-                setSortField("name");
-                setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-              }}
-            >
-              Name{" "}
-              {sortField === "name" && (sortDirection === "asc" ? "▲" : "▼")}
-            </th>
-            <th
-              onClick={() => {
-                setSortField("email");
-                setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-              }}
-            >
-              Email{" "}
-              {sortField === "email" && (sortDirection === "asc" ? "▲" : "▼")}
-            </th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedUsers.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <UserTable
+        users={sortedUsers}
+        sortField={sortField}
+        sortDirection={sortDirection}
+        onSort={(field) => {
+          if (field === sortField) {
+            setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+          } else {
+            setSortField(field);
+            setSortDirection("asc");
+          }
+        }}
+      />
       <div style={{ marginTop: "20px" }}>
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
