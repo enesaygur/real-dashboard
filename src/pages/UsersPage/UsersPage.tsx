@@ -8,6 +8,8 @@ function UsersPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [sortField, setSortField] = useState<"name" | "email">("name");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const limit = 3;
 
   useEffect(() => {
@@ -26,6 +28,14 @@ function UsersPage() {
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase()),
   );
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    const valueA = a[sortField].toLocaleLowerCase();
+    const valueB = b[sortField].toLocaleLowerCase();
+    if (sortDirection === "asc") {
+      return valueA.localeCompare(valueB);
+    }
+    return valueB.localeCompare(valueA);
+  });
   if (loading) {
     return <p>Loading users...</p>;
   }
@@ -41,13 +51,29 @@ function UsersPage() {
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
+            <th
+              onClick={() => {
+                setSortField("name");
+                setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+              }}
+            >
+              Name{" "}
+              {sortField === "name" && (sortDirection === "asc" ? "▲" : "▼")}
+            </th>
+            <th
+              onClick={() => {
+                setSortField("email");
+                setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+              }}
+            >
+              Email{" "}
+              {sortField === "email" && (sortDirection === "asc" ? "▲" : "▼")}
+            </th>
             <th>Role</th>
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user) => (
+          {sortedUsers.map((user) => (
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.email}</td>
