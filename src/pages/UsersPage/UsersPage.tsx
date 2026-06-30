@@ -61,6 +61,9 @@ function UsersPage() {
             setSortDirection("asc");
           }
         }}
+        onView={(user) => console.log("View user", user)}
+        onEdit={(user) => console.log("Edit user", user)}
+        onDelete={(user) => console.log("Delete user", user)}
       />
       <div style={{ marginTop: "20px" }}>
         <button

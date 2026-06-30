@@ -5,12 +5,19 @@ interface UserTableProps {
   sortField: "name" | "email";
   sortDirection: "asc" | "desc";
   onSort: (field: "name" | "email") => void;
+
+  onView: (user: User) => void;
+  onEdit: (user: User) => void;
+  onDelete: (user: User) => void;
 }
 function UserTable({
   users: users,
   sortField,
   sortDirection,
   onSort,
+  onView,
+  onEdit,
+  onDelete,
 }: UserTableProps) {
   return (
     <table>
@@ -26,6 +33,7 @@ function UserTable({
           </th>
 
           <th>Role</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -35,6 +43,11 @@ function UserTable({
             <td>{user.name}</td>
             <td>{user.email}</td>
             <td>{user.role}</td>
+            <td>
+              <button onClick={() => onView(user)}>View</button>
+              <button onClick={() => onEdit(user)}>Edit</button>
+              <button onClick={() => onDelete(user)}>Delete</button>
+            </td>
           </tr>
         ))}
       </tbody>
