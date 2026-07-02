@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchUsers } from "../../services/userService";
 import type { User } from "../../types/user";
 import UserTable from "../../components/users/UserTable";
+import Modal from "./../../components/common/Modal/Modal";
 
 function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -11,6 +12,7 @@ function UsersPage() {
   const [total, setTotal] = useState(0);
   const [sortField, setSortField] = useState<"name" | "email">("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const limit = 3;
 
   useEffect(() => {
@@ -61,10 +63,17 @@ function UsersPage() {
             setSortDirection("asc");
           }
         }}
-        onView={(user) => console.log("View user", user)}
+        onView={() => setIsModalOpen(true)}
         onEdit={(user) => console.log("Edit user", user)}
         onDelete={(user) => console.log("Delete user", user)}
       />
+      <Modal
+        title="User Details"
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <p>Modal is working!</p>
+      </Modal>
       <div style={{ marginTop: "20px" }}>
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
