@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchUsers } from "../../services/userService";
+import { fetchUsers, removeUser } from "../../services/userService";
 import type { User } from "../../types/user";
 import UserTable from "../../components/users/UserTable";
 import Modal from "./../../components/common/Modal/Modal";
@@ -14,6 +14,7 @@ function UsersPage() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const limit = 3;
 
   useEffect(() => {
@@ -69,7 +70,7 @@ function UsersPage() {
           setIsModalOpen(true);
         }}
         onEdit={(user) => console.log("Edit user", user)}
-        onDelete={(user) => console.log("Delete user", user)}
+        onDelete={(user) => setUserToDelete(user)}
       />
       <Modal
         title="User Details"
@@ -94,6 +95,27 @@ function UsersPage() {
             </p>
           </>
         )}
+      </Modal>
+      <Modal
+        title="Delete User"
+        isOpen={userToDelete !== null}
+        onClose={() => setUserToDelete(null)}
+      >
+        <p>
+          Are you sure you want to delete <strong>{userToDelete?.name}</strong>?
+        </p>
+        <button
+          onClick={async () => {
+            if (!userToDelete) return;
+            await removeUser(userToDelete.id);
+            const data = await fetchUsers(page, limit);
+            setUsers(data.data);
+            setUserToDelete(null);
+          }}
+        >
+          Delete
+        </button>
+        <button onClick={() => setUserToDelete(null)}>Cancel</button>
       </Modal>
       <div style={{ marginTop: "20px" }}>
         <button

@@ -1,5 +1,5 @@
 import type { User } from "../types/user";
-const ALL_USERS: User[] = [
+let ALL_USERS: User[] = [
   { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
   { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User" },
   { id: 3, name: "Mike Brown", email: "mike@example.com", role: "User" },
@@ -16,6 +16,15 @@ export function getUser(page: number, limit: number) {
         data: ALL_USERS.slice(start, end),
         total: ALL_USERS.length,
       });
+    }, 500);
+  });
+}
+
+export function deleteUser(id: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      ALL_USERS = ALL_USERS.filter((user) => user.id !== id);
+      resolve();
     }, 500);
   });
 }
