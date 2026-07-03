@@ -13,6 +13,7 @@ function UsersPage() {
   const [sortField, setSortField] = useState<"name" | "email">("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const limit = 3;
 
   useEffect(() => {
@@ -63,16 +64,36 @@ function UsersPage() {
             setSortDirection("asc");
           }
         }}
-        onView={() => setIsModalOpen(true)}
+        onView={(user) => {
+          setSelectedUser(user);
+          setIsModalOpen(true);
+        }}
         onEdit={(user) => console.log("Edit user", user)}
         onDelete={(user) => console.log("Delete user", user)}
       />
       <Modal
         title="User Details"
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedUser(null);
+        }}
       >
-        <p>Modal is working!</p>
+        {selectedUser && (
+          <>
+            <p>
+              <strong>Name:</strong> {selectedUser.name}
+            </p>
+
+            <p>
+              <strong>Email:</strong> {selectedUser.email}
+            </p>
+
+            <p>
+              <strong>Role:</strong> {selectedUser.role}
+            </p>
+          </>
+        )}
       </Modal>
       <div style={{ marginTop: "20px" }}>
         <button
