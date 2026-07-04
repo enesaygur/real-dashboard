@@ -41,3 +41,16 @@ export function createUser(user: Omit<User, "id">): Promise<User> {
     }, 500);
   });
 }
+
+export function updateUser(
+  id: number,
+  updatedUser: Omit<User, "id">,
+): Promise<User> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const index = ALL_USERS.findIndex((user) => user.id === id);
+      ALL_USERS[index] = { id, ...updatedUser };
+      resolve(ALL_USERS[index]);
+    }, 500);
+  });
+}

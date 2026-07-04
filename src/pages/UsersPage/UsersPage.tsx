@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { addUser, fetchUsers, removeUser } from "../../services/userService";
+import {
+  addUser,
+  editUser,
+  fetchUsers,
+  removeUser,
+} from "../../services/userService";
 import type { User } from "../../types/user";
 import UserTable from "../../components/users/UserTable";
 import Modal from "./../../components/common/Modal/Modal";
@@ -17,6 +22,7 @@ function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const limit = 3;
 
   useEffect(() => {
@@ -72,7 +78,7 @@ function UsersPage() {
           setSelectedUser(user);
           setIsModalOpen(true);
         }}
-        onEdit={(user) => console.log("Edit user", user)}
+        onEdit={(user) => setEditingUser(user)}
         onDelete={(user) => setUserToDelete(user)}
       />
       <Modal
@@ -133,6 +139,23 @@ function UsersPage() {
             setIsCreateModalOpen(false);
           }}
         />
+      </Modal>
+      <Modal
+        isOpen={editingUser !== null}
+        title="Edit User"
+        onClose={() => setEditingUser(null)}
+      >
+        {editingUser && (
+          <UserForm
+            initialValues={editingUser}
+            onSubmit={async (updatedUser) => {
+              await editUser(editingUser.id, updatedUser);
+              const response = await fetchUsers(page, limit);
+              setUsers(response.data);
+              setEditingUser(null);
+            }}
+          />
+        )}
       </Modal>
       <div style={{ marginTop: "20px" }}>
         <button

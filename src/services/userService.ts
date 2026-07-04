@@ -1,4 +1,4 @@
-import { createUser, deleteUser, getUser } from "../api/userApi";
+import { createUser, deleteUser, getUser, updateUser } from "../api/userApi";
 import type { User } from "../types/user";
 
 export async function fetchUsers(page: number, limit: number) {
@@ -11,4 +11,8 @@ export async function removeUser(id: number) {
 
 export async function addUser(user: Omit<User, "id">) {
   return createUser(user);
+}
+
+export async function editUser(id: number, user: Omit<User, "id">) {
+  return updateUser(id, user);
 }
