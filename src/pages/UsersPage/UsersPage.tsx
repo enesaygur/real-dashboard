@@ -3,6 +3,7 @@ import { fetchUsers, removeUser } from "../../services/userService";
 import type { User } from "../../types/user";
 import UserTable from "../../components/users/UserTable";
 import Modal from "./../../components/common/Modal/Modal";
+import UserForm from "../../components/users/UserForm/UserForm";
 
 function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
