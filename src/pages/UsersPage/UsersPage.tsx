@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchUsers, removeUser } from "../../services/userService";
+import { addUser, fetchUsers, removeUser } from "../../services/userService";
 import type { User } from "../../types/user";
 import UserTable from "../../components/users/UserTable";
 import Modal from "./../../components/common/Modal/Modal";
@@ -16,6 +16,7 @@ function UsersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const limit = 3;
 
   useEffect(() => {
@@ -48,6 +49,7 @@ function UsersPage() {
   return (
     <div>
       <h1>Users</h1>
+      <button onClick={() => setIsCreateModalOpen(true)}>Create User</button>
       <input
         type="text"
         placeholder="Search users"
@@ -117,6 +119,20 @@ function UsersPage() {
           Delete
         </button>
         <button onClick={() => setUserToDelete(null)}>Cancel</button>
+      </Modal>
+      <Modal
+        title="Create User"
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      >
+        <UserForm
+          onSubmit={async (user) => {
+            await addUser(user);
+            const response = await fetchUsers(page, limit);
+            setUsers(response.data);
+            setIsCreateModalOpen(false);
+          }}
+        />
       </Modal>
       <div style={{ marginTop: "20px" }}>
         <button

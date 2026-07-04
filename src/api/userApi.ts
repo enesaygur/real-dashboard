@@ -28,3 +28,16 @@ export function deleteUser(id: number): Promise<void> {
     }, 500);
   });
 }
+
+export function createUser(user: Omit<User, "id">): Promise<User> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newUser: User = {
+        id: Date.now(),
+        ...user,
+      };
+      ALL_USERS.push(newUser);
+      resolve(newUser);
+    }, 500);
+  });
+}
