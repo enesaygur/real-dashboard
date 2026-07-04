@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
-import {
-  addUser,
-  editUser,
-  fetchUsers,
-  removeUser,
-} from "../../services/userService";
+import { useState } from "react";
+import { addUser, editUser, removeUser } from "../../services/userService";
 import type { User } from "../../types/user";
 import UserTable from "../../components/users/UserTable";
 import Modal from "./../../components/common/Modal/Modal";
 import UserForm from "../../components/users/UserForm/UserForm";
+import { useUsers } from "../../hooks/useUsers";
 
 function UsersPage() {
-  const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState<string>("");
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
   const [sortField, setSortField] = useState<"name" | "email">("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,17 +17,8 @@ function UsersPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const limit = 3;
+  const { users, loading, loadUsers, total } = useUsers(page, limit);
 
-  useEffect(() => {
-    async function loadUsers() {
-      setLoading(true);
-      const res = await fetchUsers(page, limit);
-      setUsers(res.data);
-      setTotal(res.total);
-      setLoading(false);
-    }
-    loadUsers();
-  }, [page]);
   const totalPages = Math.ceil(total / limit);
   const filteredUsers = users.filter(
     (user) =>
@@ -117,8 +101,11 @@ function UsersPage() {
           onClick={async () => {
             if (!userToDelete) return;
             await removeUser(userToDelete.id);
-            const data = await fetchUsers(page, limit);
-            setUsers(data.data);
+            await loadUsers();
+            const newTotalPages = Math.ceil((total - 1) / limit);
+            if (page > newTotalPages) {
+              setPage(newTotalPages);
+            }
             setUserToDelete(null);
           }}
         >
@@ -134,8 +121,7 @@ function UsersPage() {
         <UserForm
           onSubmit={async (user) => {
             await addUser(user);
-            const response = await fetchUsers(page, limit);
-            setUsers(response.data);
+            await loadUsers();
             setIsCreateModalOpen(false);
           }}
         />
@@ -150,8 +136,7 @@ function UsersPage() {
             initialValues={editingUser}
             onSubmit={async (updatedUser) => {
               await editUser(editingUser.id, updatedUser);
-              const response = await fetchUsers(page, limit);
-              setUsers(response.data);
+              await loadUsers();
               setEditingUser(null);
             }}
           />
