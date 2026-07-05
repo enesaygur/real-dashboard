@@ -5,6 +5,7 @@ import UserTable from "../../components/users/UserTable";
 import Modal from "./../../components/common/Modal/Modal";
 import UserForm from "../../components/users/UserForm/UserForm";
 import { useUsers } from "../../hooks/useUsers";
+import { toast } from "react-toastify";
 
 function UsersPage() {
   const [search, setSearch] = useState<string>("");
@@ -100,13 +101,18 @@ function UsersPage() {
         <button
           onClick={async () => {
             if (!userToDelete) return;
-            await removeUser(userToDelete.id);
-            await loadUsers();
-            const newTotalPages = Math.ceil((total - 1) / limit);
-            if (page > newTotalPages) {
-              setPage(newTotalPages);
+            try {
+              await removeUser(userToDelete.id);
+              await loadUsers();
+              toast.success("User deleted successfully");
+              const newTotalPages = Math.ceil((total - 1) / limit);
+              if (page > newTotalPages) {
+                setPage(newTotalPages);
+              }
+              setUserToDelete(null);
+            } catch {
+              toast.error("Failed to delete user");
             }
-            setUserToDelete(null);
           }}
         >
           Delete
@@ -120,9 +126,14 @@ function UsersPage() {
       >
         <UserForm
           onSubmit={async (user) => {
-            await addUser(user);
-            await loadUsers();
-            setIsCreateModalOpen(false);
+            try {
+              await addUser(user);
+              await loadUsers();
+              toast.success("User created successfully");
+              setIsCreateModalOpen(false);
+            } catch {
+              toast.error("Failed to create user");
+            }
           }}
         />
       </Modal>
@@ -135,9 +146,14 @@ function UsersPage() {
           <UserForm
             initialValues={editingUser}
             onSubmit={async (updatedUser) => {
-              await editUser(editingUser.id, updatedUser);
-              await loadUsers();
-              setEditingUser(null);
+              try {
+                await editUser(editingUser.id, updatedUser);
+                await loadUsers();
+                toast.success("User updated successfully");
+                setEditingUser(null);
+              } catch {
+                toast.error("Failed to update user");
+              }
             }}
           />
         )}
