@@ -1,16 +1,47 @@
-import { fetchUsers } from "../services/userService";
-import { useQuery } from "@tanstack/react-query";
+import {
+  addUser,
+  editUser,
+  fetchUsers,
+  removeUser,
+} from "../services/userService";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { User } from "../types/user";
 
 export function useUsers(page: number, limit: number) {
-  const { data, isLoading, refetch } = useQuery({
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useQuery({
     queryKey: ["users", page, limit],
     queryFn: () => fetchUsers(page, limit),
+  });
+
+  const createUserMutation = useMutation({
+    mutationFn: addUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+
+  const updateUserMutation = useMutation({
+    mutationFn: ({ id, user }: { id: number; user: Omit<User, "id"> }) =>
+      editUser(id, user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: removeUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
   });
 
   return {
     users: data?.data ?? [],
     total: data?.total ?? 0,
     loading: isLoading,
-    loadUsers: refetch,
+    createUser: createUserMutation.mutateAsync,
+    updateUser: updateUserMutation.mutateAsync,
+    deleteUser: deleteUserMutation.mutateAsync,
   };
 }

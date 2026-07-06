@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { addUser, editUser, removeUser } from "../../services/userService";
 import type { User } from "../../types/user";
 import UserTable from "../../components/users/UserTable";
 import Modal from "./../../components/common/Modal/Modal";
@@ -18,7 +17,8 @@ function UsersPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const limit = 3;
-  const { users, loading, loadUsers, total } = useUsers(page, limit);
+  const { users, loading, total, createUser, updateUser, deleteUser } =
+    useUsers(page, limit);
 
   const totalPages = Math.ceil(total / limit);
   const filteredUsers = users.filter(
@@ -102,8 +102,7 @@ function UsersPage() {
           onClick={async () => {
             if (!userToDelete) return;
             try {
-              await removeUser(userToDelete.id);
-              await loadUsers();
+              await deleteUser(userToDelete.id);
               toast.success("User deleted successfully");
               const newTotalPages = Math.ceil((total - 1) / limit);
               if (page > newTotalPages) {
@@ -127,8 +126,7 @@ function UsersPage() {
         <UserForm
           onSubmit={async (user) => {
             try {
-              await addUser(user);
-              await loadUsers();
+              await createUser(user);
               toast.success("User created successfully");
               setIsCreateModalOpen(false);
             } catch {
@@ -147,8 +145,7 @@ function UsersPage() {
             initialValues={editingUser}
             onSubmit={async (updatedUser) => {
               try {
-                await editUser(editingUser.id, updatedUser);
-                await loadUsers();
+                await updateUser({ id: editingUser.id, user: updatedUser });
                 toast.success("User updated successfully");
                 setEditingUser(null);
               } catch {
