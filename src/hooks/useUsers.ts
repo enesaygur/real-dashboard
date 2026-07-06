@@ -12,6 +12,7 @@ export function useUsers(page: number, limit: number) {
   const { data, isLoading } = useQuery({
     queryKey: ["users", page, limit],
     queryFn: () => fetchUsers(page, limit),
+    staleTime: 5000,
   });
 
   const createUserMutation = useMutation({

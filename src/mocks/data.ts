@@ -1,6 +1,6 @@
 import type { User } from "../types/user";
 
- export let users: User[] = [
+export const INITIAL_USERS: User[] = [
   { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
   { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User" },
   { id: 3, name: "Mike Brown", email: "mike@example.com", role: "User" },

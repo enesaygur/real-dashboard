@@ -1,8 +1,11 @@
 import { http, HttpResponse } from "msw";
-import { users } from "./data";
+import { INITIAL_USERS } from "./data";
+
+let users = structuredClone(INITIAL_USERS);
 
 export const handlers = [
   http.get("/users", ({ request }) => {
+    console.log("MSW USERS STATE:", users);
     const url = new URL(request.url);
 
     const page = Number(url.searchParams.get("page") ?? "1");
