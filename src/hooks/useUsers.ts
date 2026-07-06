@@ -9,10 +9,13 @@ import type { User } from "../types/user";
 
 export function useUsers(page: number, limit: number) {
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, isFetching } = useQuery({
     queryKey: ["users", page, limit],
     queryFn: () => fetchUsers(page, limit),
-    staleTime: 5000,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 
   const createUserMutation = useMutation({
@@ -41,6 +44,9 @@ export function useUsers(page: number, limit: number) {
     users: data?.data ?? [],
     total: data?.total ?? 0,
     loading: isLoading,
+    isError,
+    error,
+    isFetching,
     createUser: createUserMutation.mutateAsync,
     updateUser: updateUserMutation.mutateAsync,
     deleteUser: deleteUserMutation.mutateAsync,

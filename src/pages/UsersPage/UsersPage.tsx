@@ -17,8 +17,17 @@ function UsersPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const limit = 3;
-  const { users, loading, total, createUser, updateUser, deleteUser } =
-    useUsers(page, limit);
+  const {
+    users,
+    loading,
+    error,
+    isError,
+    isFetching,
+    total,
+    createUser,
+    updateUser,
+    deleteUser,
+  } = useUsers(page, limit);
 
   const totalPages = Math.ceil(total / limit);
   const filteredUsers = users.filter(
@@ -37,9 +46,19 @@ function UsersPage() {
   if (loading) {
     return <p>Loading users...</p>;
   }
+
+  if (isError) {
+    return (
+      <div>
+        <h2>Something went wrong.</h2>
+        <p>{error instanceof Error ? error.message : "Unknown error"}</p>
+      </div>
+    );
+  }
   return (
     <div>
       <h1>Users</h1>
+      {isFetching && <p>Refreshing data...</p>}
       <button onClick={() => setIsCreateModalOpen(true)}>Create User</button>
       <input
         type="text"
