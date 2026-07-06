@@ -16,4 +16,36 @@ export const handlers = [
       total: users.length,
     });
   }),
+
+  http.post("/users", async ({ request }) => {
+    const body = (await request.json()) as Omit<(typeof users)[number], "id">;
+    const newUser = {
+      id: users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1,
+      ...body,
+    };
+    users.push(newUser);
+    return HttpResponse.json(newUser, { status: 201 });
+  }),
+
+  http.put("/users/:id", async ({ params, request }) => {
+    const id = Number(params.id);
+    const body = (await request.json()) as Omit<(typeof users)[number], "id">;
+    const index = users.findIndex((u) => u.id === id);
+
+    if (index === -1) {
+      return HttpResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    users[index] = { id, ...body };
+    return HttpResponse.json(users[index]);
+  }),
+
+  http.delete("/users/:id", ({ params }) => {
+    const id = Number(params.id);
+    const index = users.findIndex((u) => u.id === id);
+    if (index === -1) {
+      return HttpResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    users.splice(index, 1);
+    return HttpResponse.json({ success: true });
+  }),
 ];
