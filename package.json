@@ -13,6 +13,7 @@
     "@tanstack/react-query": "^5.101.2",
     "@tanstack/react-query-devtools": "^5.101.2",
     "axios": "^1.18.1",
+    "msw": "^2.14.6",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.0",
@@ -26,5 +27,10 @@
     "oxlint": "^1.69.0",
     "typescript": "~6.0.2",
     "vite": "^8.1.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
