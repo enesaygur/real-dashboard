@@ -22,6 +22,7 @@ export function useUsers(page: number, limit: number) {
     mutationFn: addUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
   });
 
@@ -30,6 +31,7 @@ export function useUsers(page: number, limit: number) {
       editUser(id, user),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
   });
 
@@ -37,6 +39,7 @@ export function useUsers(page: number, limit: number) {
     mutationFn: removeUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
   });
 
