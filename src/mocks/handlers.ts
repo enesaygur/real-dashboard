@@ -51,4 +51,13 @@ export const handlers = [
     users.splice(index, 1);
     return HttpResponse.json({ success: true });
   }),
+  
+  http.get("/dashboard/stats", () => {
+    return HttpResponse.json({
+      users: users.length,
+      rooms: 24,
+      bookings: 87,
+      revenue: 18500,
+    });
+  }),
 ];
