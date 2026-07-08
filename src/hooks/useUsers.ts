@@ -20,7 +20,8 @@ export function useUsers(page: number, limit: number) {
 
   const createUserMutation = useMutation({
     mutationFn: addUser,
-    onSuccess: () => {
+    onSuccess: (newUser) => {
+      console.log("New user created:", newUser);
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
