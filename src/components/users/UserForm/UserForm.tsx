@@ -1,5 +1,7 @@
 import type { User } from "../../../types/user";
 import { useForm } from "react-hook-form";
+import { userSchema } from "./../../../validation/userSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UserFormProps {
   initialValues?: User;
@@ -12,6 +14,7 @@ function UserForm({ initialValues, onSubmit: submitUser }: UserFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    resolver: zodResolver(userSchema),
     defaultValues: {
       name: initialValues?.name ?? "",
       email: initialValues?.email ?? "",
