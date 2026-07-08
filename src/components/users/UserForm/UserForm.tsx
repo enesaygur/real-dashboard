@@ -1,47 +1,37 @@
-import type React from "react";
 import type { User } from "../../../types/user";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface UserFormProps {
   initialValues?: User;
   onSubmit: (values: Omit<User, "id">) => void;
 }
 
-function UserForm({ initialValues, onSubmit }: UserFormProps) {
-  const [name, setName] = useState(initialValues?.name || "");
-  const [email, setEmail] = useState(initialValues?.email || "");
-  const [role, setRole] = useState<"Admin" | "User">(
-    initialValues?.role || "User",
-  );
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    onSubmit({ name, email, role });
-  }
+function UserForm({ initialValues, onSubmit: submitUser }: UserFormProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: initialValues?.name ?? "",
+      email: initialValues?.email ?? "",
+      role: initialValues?.role ?? "User",
+    },
+  });
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(submitUser)}>
       <div>
-        <label>Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <label htmlFor="name">Name</label>
+        <input id="name" {...register("name")} />
       </div>
 
       <div>
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <label htmlFor="email">Email</label>
+        <input type="email" id="email" {...register("email")} />
       </div>
       <div>
-        <label>Role</label>
-        <select
-          value={role}
-          onChange={(e) => setRole(e.target.value as "Admin" | "User")}
-        >
+        <label htmlFor="role">Role</label>
+        <select id="role" {...register("role", { required: true })}>
           <option value="User">User</option>
           <option value="Admin">Admin</option>
         </select>
