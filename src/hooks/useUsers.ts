@@ -38,7 +38,35 @@ export function useUsers(page: number, limit: number) {
 
   const deleteUserMutation = useMutation({
     mutationFn: removeUser,
-    onSuccess: () => {
+    onMutate: async (userId) => {
+      await queryClient.cancelQueries({ queryKey: ["users"] });
+
+      const previousUsers = queryClient.getQueriesData({
+        queryKey: ["users"],
+      });
+
+      queryClient.setQueriesData({ queryKey: ["users"] }, (oldData: any) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          data: oldData.data.filter((user: User) => user.id !== userId),
+          total: oldData.total - 1,
+        };
+      });
+
+      return { previousUsers };
+    },
+
+    onError: (_error, _userId, context) => {
+      if (!context) return;
+      console.log("Previous Users:", context.previousUsers);
+
+      context.previousUsers.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },

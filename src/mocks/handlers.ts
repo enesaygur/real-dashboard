@@ -50,7 +50,7 @@ export const handlers = [
     users.splice(index, 1);
     return HttpResponse.json({ success: true });
   }),
-  
+
   http.get("/dashboard/stats", () => {
     return HttpResponse.json({
       users: users.length,
