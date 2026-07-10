@@ -8,6 +8,7 @@ import ProfilePage from "../pages/ProfilePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuthLayout from "../layouts/AuthLayout";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
+import RoomsPage from "../pages/RoomsPage/RoomsPage";
 
 function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
+            <Route path="rooms" element={<RoomsPage />} />
             <Route path="users" element={<UsesrPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="profile" element={<ProfilePage />} />

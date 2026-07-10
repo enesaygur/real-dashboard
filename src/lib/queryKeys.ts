@@ -6,4 +6,8 @@ export const queryKeys = {
   dasboard: {
     stats: ["dashboard"] as const,
   },
+  rooms: {
+    all: ["rooms"] as const,
+    list: (page: number, limit: number) => ["rooms", page, limit] as const,
+  },
 };
