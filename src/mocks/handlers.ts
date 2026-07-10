@@ -1,7 +1,9 @@
 import { http, HttpResponse } from "msw";
 import { INITIAL_USERS } from "./data";
+import { INITIAL_ROOMS } from "./roomData";
 
 let users = structuredClone(INITIAL_USERS);
+let rooms = structuredClone(INITIAL_ROOMS);
 
 export const handlers = [
   http.get("/users", ({ request }) => {
@@ -54,7 +56,7 @@ export const handlers = [
   http.get("/dashboard/stats", () => {
     return HttpResponse.json({
       users: users.length,
-      rooms: 24,
+      rooms: rooms.length,
       bookings: 87,
       revenue: 18500,
     });
