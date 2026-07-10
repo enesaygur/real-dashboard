@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
+import ErrorBoundary from "./components/common/ErrorBoundary/ErrorBoundary.tsx";
 
 async function enableMocking() {
   if (import.meta.env.DEV) {
@@ -19,15 +20,17 @@ enableMocking().then(() => {
   createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <App />
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            pauseOnHover
-            closeOnClick
-          />
-        </AuthProvider>
+        <ErrorBoundary>
+          <AuthProvider>
+            <App />
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              pauseOnHover
+              closeOnClick
+            />
+          </AuthProvider>
+        </ErrorBoundary>
       </QueryClientProvider>
     </React.StrictMode>,
   );
