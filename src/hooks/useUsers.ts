@@ -6,11 +6,12 @@ import {
 } from "../services/userService";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { User } from "../types/user";
+import { queryKeys } from "../lib/queryKeys";
 
 export function useUsers(page: number, limit: number) {
   const queryClient = useQueryClient();
   const { data, isLoading, isError, error, isFetching } = useQuery({
-    queryKey: ["users", page, limit],
+    queryKey: queryKeys.users.list(page, limit),
     queryFn: () => fetchUsers(page, limit),
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -22,8 +23,8 @@ export function useUsers(page: number, limit: number) {
     mutationFn: addUser,
     onSuccess: (newUser) => {
       console.log("New user created:", newUser);
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dasboard.stats });
     },
   });
 
@@ -31,29 +32,32 @@ export function useUsers(page: number, limit: number) {
     mutationFn: ({ id, user }: { id: number; user: Omit<User, "id"> }) =>
       editUser(id, user),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dasboard.stats });
     },
   });
 
   const deleteUserMutation = useMutation({
     mutationFn: removeUser,
     onMutate: async (userId) => {
-      await queryClient.cancelQueries({ queryKey: ["users"] });
+      await queryClient.cancelQueries({ queryKey: queryKeys.users.all });
 
       const previousUsers = queryClient.getQueriesData({
-        queryKey: ["users"],
+        queryKey: queryKeys.users.all,
       });
 
-      queryClient.setQueriesData({ queryKey: ["users"] }, (oldData: any) => {
-        if (!oldData) return oldData;
+      queryClient.setQueriesData(
+        { queryKey: queryKeys.users.all },
+        (oldData: any) => {
+          if (!oldData) return oldData;
 
-        return {
-          ...oldData,
-          data: oldData.data.filter((user: User) => user.id !== userId),
-          total: oldData.total - 1,
-        };
-      });
+          return {
+            ...oldData,
+            data: oldData.data.filter((user: User) => user.id !== userId),
+            total: oldData.total - 1,
+          };
+        },
+      );
 
       return { previousUsers };
     },
@@ -67,8 +71,8 @@ export function useUsers(page: number, limit: number) {
       });
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dasboard.stats });
     },
   });
 
