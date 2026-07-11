@@ -10,4 +10,9 @@ export const queryKeys = {
     all: ["rooms"] as const,
     list: (page: number, limit: number) => ["rooms", page, limit] as const,
   },
+  reservations: {
+    all: ["reservations"] as const,
+    list: (page: number, limit: number) =>
+      ["reservations", page, limit] as const,
+  },
 };

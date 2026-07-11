@@ -9,6 +9,7 @@ import NotFoundPage from "../pages/NotFoundPage";
 import AuthLayout from "../layouts/AuthLayout";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
 import RoomsPage from "../pages/RoomsPage/RoomsPage";
+import ReservationsPage from "../pages/ReservationsPage/ReservationsPage";
 
 function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ function AppRoutes() {
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="rooms" element={<RoomsPage />} />
+            <Route path="reservations" element={<ReservationsPage />} />
             <Route path="users" element={<UsesrPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="profile" element={<ProfilePage />} />

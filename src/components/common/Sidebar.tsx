@@ -41,6 +41,16 @@ function Sidebar() {
           </li>
           <li>
             <NavLink
+              to="/reservations"
+              className={({ isActive }) =>
+                isActive ? `${styles.link} ${styles.active}` : styles.link
+              }
+            >
+              Reservations
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="/settings"
               className={({ isActive }) =>
                 isActive ? `${styles.link} ${styles.active}` : styles.link

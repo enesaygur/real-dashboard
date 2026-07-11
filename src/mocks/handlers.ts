@@ -1,9 +1,11 @@
 import { http, HttpResponse } from "msw";
 import { INITIAL_USERS } from "./data";
 import { INITIAL_ROOMS } from "./roomData";
+import { INITIAL_RESERVATIONS } from "./reservationData";
 
 let users = structuredClone(INITIAL_USERS);
 let rooms = structuredClone(INITIAL_ROOMS);
+let reservations = structuredClone(INITIAL_RESERVATIONS);
 
 export const handlers = [
   http.get("/users", ({ request }) => {
@@ -106,5 +108,17 @@ export const handlers = [
     }
     rooms.splice(index, 1);
     return HttpResponse.json({ success: true });
+  }),
+  // *** Reservations ***
+  http.get("/reservations", ({ request }) => {
+    const url = new URL(request.url);
+    const page = Number(url.searchParams.get("page") ?? "1");
+    const limit = Number(url.searchParams.get("limit") ?? "5");
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    return HttpResponse.json({
+      data: reservations.slice(start, end),
+      total: reservations.length,
+    });
   }),
 ];
