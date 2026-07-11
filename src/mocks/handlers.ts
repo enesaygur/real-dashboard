@@ -61,7 +61,7 @@ export const handlers = [
       revenue: 18500,
     });
   }),
-
+  // *** Rooms ***
   http.get("/rooms", ({ request }) => {
     const url = new URL(request.url);
 
@@ -75,5 +75,36 @@ export const handlers = [
       data: rooms.slice(start, end),
       total: rooms.length,
     });
+  }),
+
+  http.post("/rooms", async ({ request }) => {
+    const body = (await request.json()) as Omit<(typeof rooms)[number], "id">;
+    const newRoom = {
+      id: rooms.length ? Math.max(...rooms.map((room) => room.id)) + 1 : 1,
+      ...body,
+    };
+    rooms.push(newRoom);
+    return HttpResponse.json(newRoom, { status: 201 });
+  }),
+
+  http.put("/rooms/:id", async ({ params, request }) => {
+    const id = Number(params.id);
+    const body = (await request.json()) as Omit<(typeof rooms)[number], "id">;
+    const index = rooms.findIndex((room) => room.id === id);
+    if (index === -1) {
+      return HttpResponse.json({ message: "Room not found" }, { status: 404 });
+    }
+
+    rooms[index] = { id, ...body };
+    return HttpResponse.json(rooms[index]);
+  }),
+  http.delete("/rooms/:id", ({ params }) => {
+    const id = Number(params.id);
+    const index = rooms.findIndex((room) => room.id === id);
+    if (index === -1) {
+      return HttpResponse.json({ message: "Room not found" }, { status: 404 });
+    }
+    rooms.splice(index, 1);
+    return HttpResponse.json({ success: true });
   }),
 ];
