@@ -121,4 +121,52 @@ export const handlers = [
       total: reservations.length,
     });
   }),
+
+  http.post("/resevations", async ({ request }) => {
+    const body = (await request.json()) as Omit<
+      (typeof reservations)[number],
+      "id"
+    >;
+    const newReservation = {
+      id: reservations.length
+        ? Math.max(...reservations.map((r) => r.id)) + 1
+        : 1,
+      ...body,
+    };
+    reservations.push(newReservation);
+    return HttpResponse.json(newReservation, { status: 201 });
+  }),
+
+  http.put("/reservations/:id", async ({ params, request }) => {
+    const id = Number(params.id);
+    const body = (await request.json()) as Omit<
+      (typeof reservations)[number],
+      "id"
+    >;
+    const index = reservations.findIndex((r) => r.id === id);
+    if (index === -1) {
+      return HttpResponse.json(
+        { message: "Reservation not found" },
+        { status: 404 },
+      );
+    }
+    reservations[index] = {
+      id,
+      ...body,
+    };
+    return HttpResponse.json(reservations[index]);
+  }),
+
+  http.delete("/reservations/:id", ({ params }) => {
+    const id = Number(params.id);
+    const index = reservations.findIndex((r) => r.id === id);
+    if (index === -1) {
+      return HttpResponse.json(
+        { message: "Reservation not found" },
+        { status: 404 },
+      );
+    }
+    reservations.splice(index, 1);
+    return HttpResponse.json({ success: true });
+  }),
 ];
