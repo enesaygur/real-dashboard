@@ -122,7 +122,7 @@ export const handlers = [
     });
   }),
 
-  http.post("/resevations", async ({ request }) => {
+  http.post("/reservations", async ({ request }) => {
     const body = (await request.json()) as Omit<
       (typeof reservations)[number],
       "id"
