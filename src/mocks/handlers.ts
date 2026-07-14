@@ -59,8 +59,21 @@ export const handlers = [
     return HttpResponse.json({
       users: users.length,
       rooms: rooms.length,
-      bookings: 87,
+      bookings: reservations.length,
       revenue: 18500,
+      monthlyRevenue: [
+        { month: "Jan", revenue: 1200 },
+        { month: "Feb", revenue: 1800 },
+        { month: "Mar", revenue: 2500 },
+        { month: "Apr", revenue: 3200 },
+        { month: "May", revenue: 4100 },
+        { month: "Jun", revenue: 5200 },
+      ],
+      bookingsByStatus: [
+        { name: "Confirmed", value: 60 },
+        { name: "Pending", value: 20 },
+        { name: "Cancelled", value: 7 },
+      ],
     });
   }),
   // *** Rooms ***
