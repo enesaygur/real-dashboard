@@ -9,6 +9,7 @@ import {
 
 interface User {
   email: string;
+  role: "Admin" | "User";
 }
 interface AuthContextType {
   user: User | null;

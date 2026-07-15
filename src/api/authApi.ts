@@ -9,9 +9,14 @@ export function fakeLogin(
     setTimeout(() => {
       if (email === "admin@example.com" && password === "123456") {
         resolve({ email });
-      } else {
-        reject(new Error("Invalid credentials"));
+        return;
       }
+
+      if (email === "user@example.com" && password === "123456") {
+        resolve({ email });
+        return;
+      }
+      reject(new Error("Invalid credentials"));
     }, 1500);
   });
 }
