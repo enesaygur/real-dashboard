@@ -5,6 +5,7 @@ import Modal from "./../../components/common/Modal/Modal";
 import UserForm from "../../components/users/UserForm/UserForm";
 import { useUsers } from "../../hooks/useUsers";
 import { toast } from "react-toastify";
+import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 
 function UsersPage() {
   const [search, setSearch] = useState<string>("");
@@ -44,7 +45,7 @@ function UsersPage() {
     return valueB.localeCompare(valueA);
   });
   if (loading) {
-    return <p>Loading users...</p>;
+    return <TableSkeleton rows={5} columns={4} />;
   }
 
   if (isError) {

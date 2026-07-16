@@ -5,6 +5,7 @@ import ReservationTable from "../../components/reservations/ReservationTable";
 import Modal from "../../components/common/Modal/Modal";
 import ReservationForm from "../../components/reservations/ReservationForm";
 import { toast } from "react-toastify";
+import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 
 function ReservationsPage() {
   const [search, setSearch] = useState<string>("");
@@ -49,7 +50,7 @@ function ReservationsPage() {
       return valueA > valueB ? -1 : 1;
     }
   });
-  if (loading) return <p>Loading reservations...</p>;
+  if (loading) return <TableSkeleton rows={5} columns={4} />;
   if (isError)
     return (
       <div>

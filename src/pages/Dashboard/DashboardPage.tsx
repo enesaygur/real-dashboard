@@ -5,6 +5,7 @@ import RevenueChart from "../../components/dashboard/StatCard/charts/RevenueChar
 import BookingStatusChart from "../../components/dashboard/StatCard/charts/BookingStatusChart/BookingStatusChart";
 import type { DashboardFilter } from "../../types/dashboard";
 import { useState } from "react";
+import DashboardSkeleton from "../../components/common/Skeleton/DashboardSkeleton";
 function DashboardPage() {
   const [filter, setFilter] = useState<DashboardFilter>("all");
   const { stats, loading, isError, isFetching, refetch } = useDashboard(filter);
@@ -24,7 +25,7 @@ function DashboardPage() {
     lastUpdated: "",
   };
   if (loading) {
-    return <p>Loading dashboard...</p>;
+    return <DashboardSkeleton />;
   }
 
   if (isError) {

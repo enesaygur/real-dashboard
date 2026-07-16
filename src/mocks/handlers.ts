@@ -108,7 +108,7 @@ export const handlers = [
         .filter((room) => room.status === "Available")
         .slice(0 - 5),
       activities: getActivities().slice().reverse().slice(0, 10),
-      lastUpdated: new Date().toLocaleString('tr-TR'),
+      lastUpdated: new Date().toLocaleString("tr-TR"),
     });
   }),
   // *** Rooms ***

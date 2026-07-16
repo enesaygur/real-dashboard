@@ -5,6 +5,7 @@ import RoomTable from "../../components/rooms/RoomTable";
 import Modal from "../../components/common/Modal/Modal";
 import { toast } from "react-toastify";
 import RoomForm from "./../../components/rooms/RoomForm";
+import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 
 function RoomsPage() {
   const [search, setSearch] = useState<string>("");
@@ -46,7 +47,7 @@ function RoomsPage() {
     return valueB.localeCompare(valueA);
   });
 
-  if (loading) return <p>Loading rooms...</p>;
+  if (loading) return <TableSkeleton rows={5} columns={4} />;
   if (isError)
     return (
       <div>
