@@ -6,14 +6,18 @@ import Modal from "../../components/common/Modal/Modal";
 import ReservationForm from "../../components/reservations/ReservationForm";
 import { toast } from "react-toastify";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function ReservationsPage() {
-  const [search, setSearch] = useState<string>("");
-  const [page, setPage] = useState(1);
-  const [sortField, setSortField] = useState<
+  const [search, setSearch] = useLocalStorage("reservations-search", "");
+  const [page, setPage] = useLocalStorage("reservations-page", 1);
+  const [sortField, setSortField] = useLocalStorage<
     "guestName" | "roomNumber" | "checkIn"
-  >("guestName");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  >("reservations-sort-field", "guestName");
+  const [sortDirection, setSortDirection] = useLocalStorage<"asc" | "desc">(
+    "reservations-sort-direction",
+    "asc",
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);

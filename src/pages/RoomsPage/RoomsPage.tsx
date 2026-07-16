@@ -6,14 +6,18 @@ import Modal from "../../components/common/Modal/Modal";
 import { toast } from "react-toastify";
 import RoomForm from "./../../components/rooms/RoomForm";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function RoomsPage() {
-  const [search, setSearch] = useState<string>("");
-  const [page, setPage] = useState(1);
-  const [sortField, setSortField] = useState<"number" | "type" | "price">(
-    "number",
+  const [search, setSearch] = useLocalStorage("rooms-search", "");
+  const [page, setPage] = useLocalStorage("rooms-page", 1);
+  const [sortField, setSortField] = useLocalStorage<
+    "number" | "type" | "price"
+  >("rooms-sort-field", "number");
+  const [sortDirection, setSortDirection] = useLocalStorage<"asc" | "desc">(
+    "rooms-sort-direction",
+    "asc",
   );
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);

@@ -6,12 +6,19 @@ import UserForm from "../../components/users/UserForm/UserForm";
 import { useUsers } from "../../hooks/useUsers";
 import { toast } from "react-toastify";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function UsersPage() {
-  const [search, setSearch] = useState<string>("");
-  const [page, setPage] = useState(1);
-  const [sortField, setSortField] = useState<"name" | "email">("name");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [search, setSearch] = useLocalStorage("users-search", "");
+  const [page, setPage] = useLocalStorage("users-page", 1);
+  const [sortField, setSortField] = useLocalStorage<"name" | "email">(
+    "users-sort-field",
+    "name",
+  );
+  const [sortDirection, setSortDirection] = useLocalStorage<"asc" | "desc">(
+    "users-sort-direction",
+    "asc",
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
