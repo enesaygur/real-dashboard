@@ -3,8 +3,11 @@ import styles from "./DashboardPage.module.css";
 import { useDashboard } from "../../hooks/useDashboard";
 import RevenueChart from "../../components/dashboard/StatCard/charts/RevenueChart/RevenueChart";
 import BookingStatusChart from "../../components/dashboard/StatCard/charts/BookingStatusChart/BookingStatusChart";
+import type { DashboardFilter } from "../../types/dashboard";
+import { useState } from "react";
 function DashboardPage() {
-  const { stats, loading, isError } = useDashboard();
+  const [filter, setFilter] = useState<DashboardFilter>("all");
+  const { stats, loading, isError } = useDashboard(filter);
   const dashboard = stats ?? {
     users: 0,
     rooms: 0,
@@ -34,6 +37,32 @@ function DashboardPage() {
   return (
     <div>
       <h1>Dashboard</h1>
+      <div className={styles.filters}>
+        <button
+          className={filter === "today" ? styles.active : ""}
+          onClick={() => {setFilter("today")}}
+        >
+          Today
+        </button>
+        <button
+          className={filter === "week" ? styles.active : ""}
+          onClick={() => setFilter("week")}
+        >
+          Last 7 days
+        </button>
+        <button
+          className={filter === "month" ? styles.active : ""}
+          onClick={() => setFilter("month")}
+        >
+          Last 30 days
+        </button>
+        <button
+          className={filter === "all" ? styles.active : ""}
+          onClick={() => setFilter("all")}
+        >
+          All
+        </button>
+      </div>
       <div className={styles.grid}>
         <StatCard title="Users" value={dashboard.users} />
         <StatCard title="Rooms" value={dashboard.rooms} />

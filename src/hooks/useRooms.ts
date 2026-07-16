@@ -26,7 +26,7 @@ export function useRooms(page: number, limit: number) {
         queryKey: queryKeys.rooms.all,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dasboard.stats,
+        queryKey: queryKeys.dashboard.stats,
       });
     },
   });
@@ -39,7 +39,7 @@ export function useRooms(page: number, limit: number) {
         queryKey: queryKeys.rooms.all,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dasboard.stats,
+        queryKey: queryKeys.dashboard.stats,
       });
     },
   });
@@ -52,7 +52,7 @@ export function useRooms(page: number, limit: number) {
         queryKey: queryKeys.rooms.all,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dasboard.stats,
+        queryKey: queryKeys.dashboard.stats,
       });
     },
   });

@@ -13,6 +13,8 @@ export interface BookingStatus {
   value: number;
 }
 
+export type DashboardFilter = "today" | "week" | "month" | "all";
+
 export interface DashboardStats {
   users: number;
   rooms: number;

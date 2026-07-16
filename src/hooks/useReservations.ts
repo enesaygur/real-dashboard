@@ -24,7 +24,7 @@ export function useReserations(page: number, limit: number) {
         queryKey: queryKeys.reservations.all,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dasboard.stats,
+        queryKey: queryKeys.dashboard.stats,
       });
     },
   });
@@ -43,7 +43,7 @@ export function useReserations(page: number, limit: number) {
         queryKey: queryKeys.reservations.all,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dasboard.stats,
+        queryKey: queryKeys.dashboard.stats,
       });
     },
   });
@@ -55,7 +55,7 @@ export function useReserations(page: number, limit: number) {
         queryKey: queryKeys.reservations.all,
       });
       queryClient.invalidateQueries({
-        queryKey: queryKeys.dasboard.stats,
+        queryKey: queryKeys.dashboard.stats,
       });
     },
   });

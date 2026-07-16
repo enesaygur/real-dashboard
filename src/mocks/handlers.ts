@@ -54,17 +54,38 @@ export const handlers = [
     if (index === -1) {
       return HttpResponse.json({ message: "User not found" }, { status: 404 });
     }
+    const deletedUser = users[index];
     users.splice(index, 1);
-    addActivity(`User "${users[index].name}" deleted`, "delete");
+    addActivity(`User "${deletedUser.name}" deleted`, "delete");
     return HttpResponse.json({ success: true });
   }),
 
-  http.get("/dashboard/stats", () => {
+  http.get("/dashboard/stats", ({ request }) => {
+    const url = new URL(request.url);
+    const filter = url.searchParams.get("filter") ?? "all";
+    let revenue = 18500;
+    let bookings = reservations.length;
+
+    if (filter === "today") {
+      revenue = 1200;
+      bookings = 4;
+    }
+
+    if (filter === "week") {
+      revenue = 6400;
+      bookings = 18;
+    }
+
+    if (filter === "month") {
+      revenue = 14200;
+      bookings = 43;
+    }
+
     return HttpResponse.json({
       users: users.length,
       rooms: rooms.length,
-      bookings: reservations.length,
-      revenue: 18500,
+      bookings,
+      revenue,
       monthlyRevenue: [
         { month: "Jan", revenue: 1200 },
         { month: "Feb", revenue: 1800 },
@@ -134,8 +155,9 @@ export const handlers = [
     if (index === -1) {
       return HttpResponse.json({ message: "Room not found" }, { status: 404 });
     }
+    const deletedRoom = rooms[index];
     rooms.splice(index, 1);
-    addActivity(`Room "${rooms[index].number}" deleted`, "delete");
+    addActivity(`Room "${deletedRoom.number}" deleted`, "delete");
     return HttpResponse.json({ success: true });
   }),
   // *** Reservations ***
@@ -197,9 +219,10 @@ export const handlers = [
         { status: 404 },
       );
     }
+    const deletedReservation = reservations[index];
     reservations.splice(index, 1);
     addActivity(
-      `Reservation "${reservations[index].guestName}" deleted`,
+      `Reservation "${deletedReservation.guestName}" deleted`,
       "delete",
     );
     return HttpResponse.json({ success: true });

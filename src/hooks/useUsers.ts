@@ -24,7 +24,7 @@ export function useUsers(page: number, limit: number) {
     onSuccess: (newUser) => {
       console.log("New user created:", newUser);
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-      queryClient.invalidateQueries({ queryKey: queryKeys.dasboard.stats });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats });
     },
   });
 
@@ -33,7 +33,7 @@ export function useUsers(page: number, limit: number) {
       editUser(id, user),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-      queryClient.invalidateQueries({ queryKey: queryKeys.dasboard.stats });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats });
     },
   });
 
@@ -72,7 +72,7 @@ export function useUsers(page: number, limit: number) {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
-      queryClient.invalidateQueries({ queryKey: queryKeys.dasboard.stats });
+      queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.stats });
     },
   });
 

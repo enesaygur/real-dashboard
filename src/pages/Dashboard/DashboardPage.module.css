@@ -24,7 +24,7 @@
 
   padding: 20px;
 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .listCard h2 {
@@ -35,4 +35,20 @@
 
 .listCard p {
   margin: 8px 0;
+}
+.filters {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.filters button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.active {
+  font-weight: bold;
 }
