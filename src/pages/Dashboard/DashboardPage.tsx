@@ -7,7 +7,7 @@ import type { DashboardFilter } from "../../types/dashboard";
 import { useState } from "react";
 function DashboardPage() {
   const [filter, setFilter] = useState<DashboardFilter>("all");
-  const { stats, loading, isError } = useDashboard(filter);
+  const { stats, loading, isError, isFetching, refetch } = useDashboard(filter);
   const dashboard = stats ?? {
     users: 0,
     rooms: 0,
@@ -21,6 +21,7 @@ function DashboardPage() {
     recentReservations: [],
     availableRooms: [],
     activities: [],
+    lastUpdated: "",
   };
   if (loading) {
     return <p>Loading dashboard...</p>;
@@ -37,10 +38,18 @@ function DashboardPage() {
   return (
     <div>
       <h1>Dashboard</h1>
+      <div className={styles.toolbar}>
+        <button onClick={() => refetch()} disabled={isFetching}>
+          {isFetching ? "Refreshing..." : "Refresh Dashboard"}
+        </button>
+        <span>Last updated: {dashboard.lastUpdated}</span>
+      </div>
       <div className={styles.filters}>
         <button
           className={filter === "today" ? styles.active : ""}
-          onClick={() => {setFilter("today")}}
+          onClick={() => {
+            setFilter("today");
+          }}
         >
           Today
         </button>
@@ -64,12 +73,13 @@ function DashboardPage() {
         </button>
       </div>
       <div className={styles.grid}>
-        <StatCard title="Users" value={dashboard.users} />
-        <StatCard title="Rooms" value={dashboard.rooms} />
-        <StatCard title="Bookings" value={dashboard.bookings} />
+        <StatCard title="Users" value={dashboard.users} icon="👤" />
+        <StatCard title="Rooms" value={dashboard.rooms} icon="🏨" />
+        <StatCard title="Bookings" value={dashboard.bookings} icon="📅" />
         <StatCard
           title="Revenue"
           value={`$${(dashboard.revenue ?? 0).toLocaleString()}`}
+          icon="💰"
         />
       </div>
       <div className={styles.chartGrid}>

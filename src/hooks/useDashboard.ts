@@ -4,9 +4,16 @@ import { queryKeys } from "../lib/queryKeys";
 import type { DashboardFilter } from "../types/dashboard";
 
 export function useDashboard(filter: DashboardFilter) {
-  const { data, isLoading, isError, error, isFetching } = useQuery({
+  const { data, isLoading, isError, error, isFetching, refetch } = useQuery({
     queryKey: [...queryKeys.dashboard.stats, filter],
     queryFn: () => fetchDashboardStats(filter),
   });
-  return { stats: data, loading: isLoading, isError, error, isFetching };
+  return {
+    stats: data,
+    loading: isLoading,
+    isError,
+    error,
+    isFetching,
+    refetch,
+  };
 }

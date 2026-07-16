@@ -28,4 +28,5 @@ export interface DashboardStats {
   availableRooms: Room[];
 
   activities: Activity[];
+  lastUpdated: string;
 }
