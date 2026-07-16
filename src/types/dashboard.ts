@@ -1,8 +1,26 @@
+import type { Reservation } from "./reservation";
+import type { Room } from "./rooms";
+import type { User } from "./user";
+
+export interface MonthlyRevenue {
+  month: string;
+  revenue: number;
+}
+
+export interface BookingStatus {
+  name: string;
+  value: number;
+}
+
 export interface DashboardStats {
   users: number;
   rooms: number;
   bookings: number;
   revenue: number;
-  monthlyRevenue: { month: string; revenue: number }[];
-  bookingsByStatus: { name: string; value: number }[];
+  monthlyRevenue: MonthlyRevenue[];
+  bookingsByStatus: BookingStatus[];
+
+  recentUsers: User[];
+  recentReservations: Reservation[];
+  availableRooms: Room[];
 }

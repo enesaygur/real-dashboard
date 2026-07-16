@@ -10,8 +10,13 @@ function DashboardPage() {
     rooms: 0,
     bookings: 0,
     revenue: 0,
+
     monthlyRevenue: [],
     bookingsByStatus: [],
+
+    recentUsers: [],
+    recentReservations: [],
+    availableRooms: [],
   };
   if (loading) {
     return <p>Loading dashboard...</p>;
@@ -40,6 +45,35 @@ function DashboardPage() {
       <div className={styles.chartGrid}>
         <RevenueChart data={stats?.monthlyRevenue ?? []} />
         <BookingStatusChart data={stats?.bookingsByStatus ?? []} />
+      </div>
+      <div className={styles.lists}>
+        <div className={styles.listCard}>
+          <h2>Recent Users</h2>
+
+          {dashboard.recentUsers.map((user) => (
+            <p key={user.name}>{user.email}</p>
+          ))}
+        </div>
+
+        <div className={styles.listCard}>
+          <h2>Recent Reservations</h2>
+
+          {dashboard.recentReservations.map((reservation) => (
+            <p key={reservation.id}>
+              {reservation.guestName} - Room{reservation.roomNumber}
+            </p>
+          ))}
+        </div>
+
+        <div className={styles.listCard}>
+          <h2>Available Rooms</h2>
+
+          {dashboard.availableRooms.map((room) => (
+            <p key={room.id}>
+              Room {room.number} - {room.type}
+            </p>
+          ))}
+        </div>
       </div>
     </div>
   );

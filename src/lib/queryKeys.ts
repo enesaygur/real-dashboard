@@ -15,4 +15,7 @@ export const queryKeys = {
     list: (page: number, limit: number) =>
       ["reservations", page, limit] as const,
   },
+  dashboard: {
+    stats: ["dashboard"] as const,
+  },
 };

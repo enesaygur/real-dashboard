@@ -74,6 +74,14 @@ export const handlers = [
         { name: "Pending", value: 20 },
         { name: "Cancelled", value: 7 },
       ],
+
+      recentUsers: users.slice(-5).reverse(),
+
+      recentReservations: reservations.slice(-5).reverse(),
+
+      availableRooms: rooms
+        .filter((room) => room.status === "Available")
+        .slice(0 - 5),
     });
   }),
   // *** Rooms ***
