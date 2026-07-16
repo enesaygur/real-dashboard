@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 import { INITIAL_USERS } from "./data";
 import { INITIAL_ROOMS } from "./roomData";
 import { INITIAL_RESERVATIONS } from "./reservationData";
+import { addActivity, getActivities } from "./activityStore";
 
 let users = structuredClone(INITIAL_USERS);
 let rooms = structuredClone(INITIAL_ROOMS);
@@ -30,6 +31,7 @@ export const handlers = [
       ...body,
     };
     users.push(newUser);
+    addActivity(`User "${newUser.name}" created`, "create");
     return HttpResponse.json(newUser, { status: 201 });
   }),
 
@@ -42,6 +44,7 @@ export const handlers = [
       return HttpResponse.json({ message: "User not found" }, { status: 404 });
     }
     users[index] = { id, ...body };
+    addActivity(`User "${body.name}" updated`, "update");
     return HttpResponse.json(users[index]);
   }),
 
@@ -52,6 +55,7 @@ export const handlers = [
       return HttpResponse.json({ message: "User not found" }, { status: 404 });
     }
     users.splice(index, 1);
+    addActivity(`User "${users[index].name}" deleted`, "delete");
     return HttpResponse.json({ success: true });
   }),
 
@@ -82,6 +86,7 @@ export const handlers = [
       availableRooms: rooms
         .filter((room) => room.status === "Available")
         .slice(0 - 5),
+      activities: getActivities().slice().reverse().slice(0, 10),
     });
   }),
   // *** Rooms ***
@@ -107,6 +112,7 @@ export const handlers = [
       ...body,
     };
     rooms.push(newRoom);
+    addActivity(`Room "${newRoom.number}" created`, "create");
     return HttpResponse.json(newRoom, { status: 201 });
   }),
 
@@ -119,6 +125,7 @@ export const handlers = [
     }
 
     rooms[index] = { id, ...body };
+    addActivity(`Room "${body.number}" updated`, "update");
     return HttpResponse.json(rooms[index]);
   }),
   http.delete("/rooms/:id", ({ params }) => {
@@ -128,6 +135,7 @@ export const handlers = [
       return HttpResponse.json({ message: "Room not found" }, { status: 404 });
     }
     rooms.splice(index, 1);
+    addActivity(`Room "${rooms[index].number}" deleted`, "delete");
     return HttpResponse.json({ success: true });
   }),
   // *** Reservations ***
@@ -155,6 +163,7 @@ export const handlers = [
       ...body,
     };
     reservations.push(newReservation);
+    addActivity(`Reservation "${newReservation.guestName}" created`, "create");
     return HttpResponse.json(newReservation, { status: 201 });
   }),
 
@@ -175,6 +184,7 @@ export const handlers = [
       id,
       ...body,
     };
+    addActivity(`Reservation "${body.guestName}" updated`, "update");
     return HttpResponse.json(reservations[index]);
   }),
 
@@ -188,6 +198,10 @@ export const handlers = [
       );
     }
     reservations.splice(index, 1);
+    addActivity(
+      `Reservation "${reservations[index].guestName}" deleted`,
+      "delete",
+    );
     return HttpResponse.json({ success: true });
   }),
 ];

@@ -1,3 +1,4 @@
+import type { Activity } from "./activity";
 import type { Reservation } from "./reservation";
 import type { Room } from "./rooms";
 import type { User } from "./user";
@@ -23,4 +24,6 @@ export interface DashboardStats {
   recentUsers: User[];
   recentReservations: Reservation[];
   availableRooms: Room[];
+
+  activities: Activity[];
 }

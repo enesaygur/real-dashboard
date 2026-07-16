@@ -17,6 +17,7 @@ function DashboardPage() {
     recentUsers: [],
     recentReservations: [],
     availableRooms: [],
+    activities: [],
   };
   if (loading) {
     return <p>Loading dashboard...</p>;
@@ -72,6 +73,12 @@ function DashboardPage() {
             <p key={room.id}>
               Room {room.number} - {room.type}
             </p>
+          ))}
+        </div>
+        <div className={styles.listCard}>
+          <h2>Latest Activities</h2>
+          {dashboard.activities.map((activity) => (
+            <p key={activity.id}>{activity.message}</p>
           ))}
         </div>
       </div>
