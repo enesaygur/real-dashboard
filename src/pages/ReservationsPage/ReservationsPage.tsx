@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { exportToCsv } from "../../utils/csv";
+import { exportToExcel } from "../../utils/excel";
 
 function ReservationsPage() {
   const [search, setSearch] = useLocalStorage("reservations-search", "");
@@ -80,6 +81,12 @@ function ReservationsPage() {
         >
           Export CSV
         </button>
+        <button disabled={sortedReservations.length === 0}
+          onClick={() => {
+            exportToExcel("reservations", sortedReservations);
+            toast.success("Reservations exported to Excel");
+          }}
+        >Export Excel</button>
       </div>
       <input
         type="text"

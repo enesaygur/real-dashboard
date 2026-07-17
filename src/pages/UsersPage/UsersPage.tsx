@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { exportToCsv } from "../../utils/csv";
+import { exportToExcel } from "../../utils/excel";
 
 function UsersPage() {
   const [search, setSearch] = useLocalStorage("users-search", "");
@@ -78,6 +79,15 @@ function UsersPage() {
           }}
         >
           Export CSV
+        </button>
+        <button
+          disabled={!sortedUsers.length}
+          onClick={() => {
+            exportToExcel("users", sortedUsers);
+            toast.success("Users exported successfully");
+          }}
+        >
+          Export Excel
         </button>
       </div>
       <input

@@ -8,6 +8,7 @@ import RoomForm from "./../../components/rooms/RoomForm";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { exportToCsv } from "../../utils/csv";
+import { exportToExcel } from "../../utils/excel";
 
 function RoomsPage() {
   const [search, setSearch] = useLocalStorage("rooms-search", "");
@@ -80,6 +81,15 @@ function RoomsPage() {
           }}
         >
           Export CSV
+        </button>
+        <button
+          disabled={!sortedRooms.length}
+          onClick={() => {
+            exportToExcel("rooms", sortedRooms);
+            toast.success("Rooms exported successfully");
+          }}
+        >
+          Export Excel
         </button>
       </div>
       <input
