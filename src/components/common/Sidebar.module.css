@@ -2,8 +2,8 @@
   width: 15rem;
   min-height: 100vh;
   padding: 1.25rem;
-  background-color: #1f2937;
-  color: white;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 .title {
@@ -22,14 +22,14 @@
 .link {
   display: block;
   padding: 0.75rem;
-  color: white;
+  color: var(--text);
   text-decoration: none;
   border-radius: 0.5rem;
   transition: background-color 0.2s ease-in-out;
 }
 
 .link:hover {
-  background-color: #374151;
+  background-color: var(--surface-secondary);
 }
 
 .active {

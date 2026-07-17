@@ -9,6 +9,7 @@ import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { exportToCsv } from "../../utils/csv";
 import { exportToExcel } from "../../utils/excel";
+import styles from "./UsersPage.module.css";
 
 function UsersPage() {
   const [search, setSearch] = useLocalStorage("users-search", "");

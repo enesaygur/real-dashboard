@@ -13,3 +13,12 @@
   color: red;
   font-size: 14px;
 }
+.field input,
+.field select,
+.field textarea {
+  background: var(--input-bg);
+
+  color: var(--text);
+
+  border: 1px solid var(--border);
+}

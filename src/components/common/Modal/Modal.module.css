@@ -10,7 +10,8 @@
 
 .modal {
   width: 500px;
-  background: white;
+  background: var(--card-bg);
+  color: var(--text);
   border-radius: 8px;
   padding: 24px;
 }

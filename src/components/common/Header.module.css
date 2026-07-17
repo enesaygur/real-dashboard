@@ -1,7 +1,17 @@
 .header {
   height: 4.375rem;
+
   display: flex;
+
   align-items: center;
+
   padding: 0 1.5rem;
-  border-bottom: .0625rem solid #e5e7eb;
+
+  border-bottom: 1px solid var(--border);
+
+  background: var(--card-bg);
+
+  color: var(--text);
+
+  transition: 0.3s;
 }
