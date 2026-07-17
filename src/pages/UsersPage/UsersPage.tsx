@@ -7,6 +7,7 @@ import { useUsers } from "../../hooks/useUsers";
 import { toast } from "react-toastify";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { exportToCsv } from "../../utils/csv";
 
 function UsersPage() {
   const [search, setSearch] = useLocalStorage("users-search", "");
@@ -67,7 +68,18 @@ function UsersPage() {
     <div>
       <h1>Users</h1>
       {isFetching && <p>Refreshing data...</p>}
-      <button onClick={() => setIsCreateModalOpen(true)}>Create User</button>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <button onClick={() => setIsCreateModalOpen(true)}>Create User</button>
+        <button
+          disabled={!sortedUsers.length}
+          onClick={() => {
+            exportToCsv("users", sortedUsers);
+            toast.success("Users exported successfully");
+          }}
+        >
+          Export CSV
+        </button>
+      </div>
       <input
         type="text"
         placeholder="Search users"

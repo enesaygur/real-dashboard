@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import RoomForm from "./../../components/rooms/RoomForm";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { exportToCsv } from "../../utils/csv";
 
 function RoomsPage() {
   const [search, setSearch] = useLocalStorage("rooms-search", "");
@@ -63,13 +64,24 @@ function RoomsPage() {
     <div>
       <h1>Rooms</h1>
       {isFetching && <p>Refreshing data...</p>}
-      <button
-        onClick={() => {
-          setIsCreateModalOpen(true);
-        }}
-      >
-        Create Room
-      </button>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <button
+          onClick={() => {
+            setIsCreateModalOpen(true);
+          }}
+        >
+          Create Room
+        </button>
+        <button
+          disabled={!sortedRooms.length}
+          onClick={() => {
+            exportToCsv("rooms", sortedRooms);
+            toast.success("Rooms exported successfully");
+          }}
+        >
+          Export CSV
+        </button>
+      </div>
       <input
         type="text"
         placeholder="Search Rooms"

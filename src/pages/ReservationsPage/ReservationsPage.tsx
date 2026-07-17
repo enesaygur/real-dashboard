@@ -7,6 +7,7 @@ import ReservationForm from "../../components/reservations/ReservationForm";
 import { toast } from "react-toastify";
 import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { exportToCsv } from "../../utils/csv";
 
 function ReservationsPage() {
   const [search, setSearch] = useLocalStorage("reservations-search", "");
@@ -66,9 +67,20 @@ function ReservationsPage() {
     <div>
       <h1>Reservations</h1>
       {isFetching && <p>Refreshing reservations...</p>}
-      <button onClick={() => setIsCreateModalOpen(true)}>
-        Create Reservation
-      </button>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <button onClick={() => setIsCreateModalOpen(true)}>
+          Create Reservation
+        </button>
+        <button
+          disabled={sortedReservations.length === 0}
+          onClick={() => {
+            exportToCsv("reservations", sortedReservations);
+            toast.success("Reservations exported to CSV");
+          }}
+        >
+          Export CSV
+        </button>
+      </div>
       <input
         type="text"
         value={search}
