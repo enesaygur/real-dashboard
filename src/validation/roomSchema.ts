@@ -8,7 +8,7 @@ export const roomSchema = z.object({
   type: z.enum(["Single", "Double", "Suite"], {
     error: "Please select a valid room type",
   }),
-  price: z.coerce.number().min(1, "Room price must be at least 1."),
+  price: z.number().min(1, "Room price must be at least 1."),
   status: z.enum(["Available", "Occupied"], {
     error: "Please select a valid room status",
   }),

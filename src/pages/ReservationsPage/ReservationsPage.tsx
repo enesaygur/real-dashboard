@@ -42,7 +42,7 @@ function ReservationsPage() {
   } = useReserations(page, limit);
   const totalPages = Math.ceil(total / limit);
   const filteredReservations = reservations.filter(
-    (reservation) =>
+    (reservation: Reservation) =>
       reservation.guestName.toLowerCase().includes(search.toLowerCase()) ||
       reservation.roomNumber.toLowerCase().includes(search.toLowerCase()) ||
       reservation.checkIn.toLowerCase().includes(search.toLowerCase()),
@@ -81,12 +81,15 @@ function ReservationsPage() {
         >
           Export CSV
         </button>
-        <button disabled={sortedReservations.length === 0}
+        <button
+          disabled={sortedReservations.length === 0}
           onClick={() => {
             exportToExcel("reservations", sortedReservations);
             toast.success("Reservations exported to Excel");
           }}
-        >Export Excel</button>
+        >
+          Export Excel
+        </button>
       </div>
       <input
         type="text"

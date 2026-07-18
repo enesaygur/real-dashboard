@@ -39,7 +39,7 @@ function RoomsPage() {
   } = useRooms(page, limit);
   const totalPages = Math.ceil(total / limit);
   const filteredRooms = rooms.filter(
-    (room) =>
+    (room: Room) =>
       room.number.toLowerCase().includes(search.toLocaleLowerCase()) ||
       room.type.toLowerCase().includes(search.toLocaleLowerCase()) ||
       room.price.toString().includes(search.toString()),

@@ -9,7 +9,6 @@ import TableSkeleton from "../../components/common/Skeleton/TableSkeleton";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { exportToCsv } from "../../utils/csv";
 import { exportToExcel } from "../../utils/excel";
-import styles from "./UsersPage.module.css";
 
 function UsersPage() {
   const [search, setSearch] = useLocalStorage("users-search", "");
@@ -42,7 +41,7 @@ function UsersPage() {
 
   const totalPages = Math.ceil(total / limit);
   const filteredUsers = users.filter(
-    (user) =>
+    (user: User) =>
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase()),
   );
